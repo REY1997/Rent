@@ -11,6 +11,10 @@ properties:
     displayName: 형태
   note.보증금:
     displayName: 보증금(만)
+  note.가까운역:
+    displayName: 역
+  note.도보분:
+    displayName: 도보(분)
   note.면적_평:
     displayName: 평
   note.관심도:
@@ -28,6 +32,42 @@ properties:
   formula.역세권:
     displayName: 역세권
 views:
+  - type: table
+    name: 핵심 4축
+    order:
+      - note.지역
+      - note.건물형태
+      - note.보증금
+      - formula.역세권
+      - note.관심도
+      - note.상태
+    sort:
+      - property: note.보증금
+        direction: ASC
+  - type: table
+    name: 지역별
+    order:
+      - note.지역
+      - note.건물형태
+      - note.보증금
+      - note.도보분
+      - note.상태
+    sort:
+      - property: note.지역
+        direction: ASC
+      - property: note.보증금
+        direction: ASC
+  - type: table
+    name: 역과 가까운 순
+    order:
+      - note.가까운역
+      - note.도보분
+      - note.지역
+      - note.건물형태
+      - note.보증금
+    sort:
+      - property: note.도보분
+        direction: ASC
   - type: table
     name: 전체 매물
     order:
