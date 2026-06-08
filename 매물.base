@@ -2,11 +2,16 @@ filters:
   and:
     - 유형 == "매물"
 formulas:
+  지역: '구 + " " + 동'
   평당보증금: "(보증금 / 면적_평).round(0)"
-  역세권: '가까운역 + " " + 도보분 + "분"'
+  역세권: 'if(도보분 > 0, 가까운역 + " " + 도보분 + "분", "미확인")'
 properties:
-  note.지역:
-    displayName: 지역
+  note.구:
+    displayName: 구
+  note.동:
+    displayName: 동
+  note.단지:
+    displayName: 단지
   note.건물형태:
     displayName: 형태
   note.보증금:
@@ -27,6 +32,8 @@ properties:
     displayName: 확정일자
   note.입주가능일:
     displayName: 입주가능일
+  formula.지역:
+    displayName: 지역
   formula.평당보증금:
     displayName: 평당보증금(만)
   formula.역세권:
@@ -35,7 +42,7 @@ views:
   - type: table
     name: 핵심 4축
     order:
-      - note.지역
+      - formula.지역
       - note.건물형태
       - note.보증금
       - formula.역세권
@@ -47,22 +54,29 @@ views:
   - type: table
     name: 지역별
     order:
-      - note.지역
+      - note.구
+      - note.동
+      - note.단지
       - note.건물형태
       - note.보증금
       - note.도보분
       - note.상태
     sort:
-      - property: note.지역
+      - property: note.구
+        direction: ASC
+      - property: note.동
         direction: ASC
       - property: note.보증금
         direction: ASC
   - type: table
     name: 역과 가까운 순
+    filters:
+      and:
+        - 도보분 > 0
     order:
       - note.가까운역
       - note.도보분
-      - note.지역
+      - formula.지역
       - note.건물형태
       - note.보증금
     sort:
@@ -71,7 +85,9 @@ views:
   - type: table
     name: 전체 매물
     order:
-      - note.지역
+      - note.구
+      - note.동
+      - note.단지
       - note.건물형태
       - note.보증금
       - note.면적_평
@@ -88,7 +104,7 @@ views:
         - 관심도 >= 3
         - 상태 != "제외"
     order:
-      - note.지역
+      - formula.지역
       - note.보증금
       - note.면적_평
       - note.관심도
@@ -105,7 +121,7 @@ views:
         - 보증금 <= 30000
         - 상태 != "제외"
     order:
-      - note.지역
+      - formula.지역
       - note.건물형태
       - note.보증금
       - note.융자
@@ -119,7 +135,7 @@ views:
       and:
         - 융자 == true
     order:
-      - note.지역
+      - formula.지역
       - note.보증금
       - note.확정일자
     sort:
@@ -128,7 +144,7 @@ views:
   - type: cards
     name: 카드 보기
     order:
-      - note.지역
+      - formula.지역
       - note.보증금
       - note.면적_평
       - note.상태
