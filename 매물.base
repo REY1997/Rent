@@ -1,0 +1,97 @@
+filters:
+  and:
+    - 유형 == "매물"
+formulas:
+  평당보증금: "(보증금 / 면적_평).round(0)"
+  역세권: '가까운역 + " " + 도보분 + "분"'
+properties:
+  note.지역:
+    displayName: 지역
+  note.건물형태:
+    displayName: 형태
+  note.보증금:
+    displayName: 보증금(만)
+  note.면적_평:
+    displayName: 평
+  note.관심도:
+    displayName: ★
+  note.상태:
+    displayName: 상태
+  note.융자:
+    displayName: 융자
+  note.확정일자:
+    displayName: 확정일자
+  note.입주가능일:
+    displayName: 입주가능일
+  formula.평당보증금:
+    displayName: 평당보증금(만)
+  formula.역세권:
+    displayName: 역세권
+views:
+  - type: table
+    name: 전체 매물
+    order:
+      - note.지역
+      - note.건물형태
+      - note.보증금
+      - note.면적_평
+      - formula.역세권
+      - note.관심도
+      - note.상태
+    sort:
+      - property: note.보증금
+        direction: ASC
+  - type: table
+    name: 관심 매물
+    filters:
+      and:
+        - 관심도 >= 3
+        - 상태 != "제외"
+    order:
+      - note.지역
+      - note.보증금
+      - note.면적_평
+      - note.관심도
+      - note.상태
+    sort:
+      - property: note.관심도
+        direction: DESC
+      - property: note.보증금
+        direction: ASC
+  - type: table
+    name: 예산 내 (3억 이하)
+    filters:
+      and:
+        - 보증금 <= 30000
+        - 상태 != "제외"
+    order:
+      - note.지역
+      - note.건물형태
+      - note.보증금
+      - note.융자
+      - note.확정일자
+    sort:
+      - property: note.보증금
+        direction: ASC
+  - type: table
+    name: 융자 주의
+    filters:
+      and:
+        - 융자 == true
+    order:
+      - note.지역
+      - note.보증금
+      - note.확정일자
+    sort:
+      - property: note.보증금
+        direction: ASC
+  - type: cards
+    name: 카드 보기
+    order:
+      - note.지역
+      - note.보증금
+      - note.면적_평
+      - note.상태
+    sort:
+      - property: note.관심도
+        direction: DESC
